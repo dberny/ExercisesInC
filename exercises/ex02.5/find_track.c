@@ -1,6 +1,10 @@
-/* Example code for Exercises in C.
+/* Diego Berny
+
+Example code for Exercises in C.
 
 Modified version of an example from Chapter 2.5 of Head First C.
+
+This program finds all the tracks that match the pattern specified by the user.
 
 */
 
