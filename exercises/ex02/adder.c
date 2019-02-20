@@ -16,11 +16,12 @@ void getNums(int* nums, int *count) {
 		fgets(num, num_digits, stdin);
 		if (strlen(num) > num_digits-2) {
 			fprintf(stderr, "that number is too big!\n");
-			continue;
+			exit(-1);
 		}
 		int val = atoi(num);
 		if (val == 0) {
 			fprintf(stderr, "that's not right\n");
+			exit(-1);
 		}
 		nums[*count] = val;
 		(*count)++;
