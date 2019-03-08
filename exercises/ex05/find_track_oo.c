@@ -31,6 +31,9 @@ typedef regex_t Regex;
 */
 Regex *make_regex(char *pattern, int flags) {
     // FILL THIS IN!
+	regex_t *regex = malloc(sizeof(regex_t));
+	int ret;
+	ret = regcomp(regex, pattern, REG_EXTENDED | REG_NOSUB);
     return NULL;
 }
 
