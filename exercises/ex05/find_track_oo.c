@@ -31,10 +31,14 @@ typedef regex_t Regex;
 */
 Regex *make_regex(char *pattern, int flags) {
     // FILL THIS IN!
-	regex_t *regex = malloc(sizeof(regex_t));
+	Regex *regex = malloc(sizeof(regex_t));
 	int ret;
-	ret = regcomp(regex, pattern, REG_EXTENDED | REG_NOSUB);
-    return NULL;
+	ret = regcomp(regex, pattern, flags);
+	if (ret) {
+        fprintf(stderr, "Could not compile regex\n");
+        exit(1);
+    }
+    return regex;
 }
 
 /* Checks whether a regex matches a string.
@@ -45,6 +49,18 @@ Regex *make_regex(char *pattern, int flags) {
 */
 int regex_match(Regex *regex, char *s) {
     // FILL THIS IN!
+	char msgbuf[100];
+	int ret = 0;
+    ret = regexec(regex, s, 0, NULL, 0);
+    if (!ret) {
+		return 1;
+    } else if (ret == REG_NOMATCH) {
+        return 0;
+    } else {
+        regerror(ret, regex, msgbuf, sizeof(msgbuf));
+        fprintf(stderr, "Regex match failed: %s\n", msgbuf);
+        exit(1);
+        }
     return 0;
 }
 
@@ -54,6 +70,7 @@ int regex_match(Regex *regex, char *s) {
 */
 void regex_free(Regex *regex) {
     // FILL THIS IN!
+	free(regex);
 }
 
 
@@ -80,6 +97,7 @@ void find_track_regex(char pattern[])
 int main (int argc, char *argv[])
 {
     char *pattern = "F.*F.*";
+	// char *pattern = "[A-C]";
     find_track_regex(pattern);
 
     return 0;
