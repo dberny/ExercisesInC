@@ -30,7 +30,9 @@ Node *make_node(int val, Node *next) {
     return node;
 }
 
-
+void free_node(Node *node) {
+	free(node);
+}
 /* Prints the values in a list.
 *
 * list: pointer to pointer to Node
@@ -61,6 +63,7 @@ int pop(Node **list) {
 	Node *first = *list;
 	int num = first->val;
 	*list = first->next;
+	free(first);
     return num;
 }
 
@@ -93,10 +96,12 @@ int remove_by_value(Node **list, int val) {
 	Node *current = *list;
 	if (current->val == val) {
 		*list = current->next;
+		free(current);
 		return 1;
 	}
 	while(current->next != NULL) {
 		if (current->next->val == val) {
+			free(current->next);
 			current->next = current->next->next;
 			return 1;
 		}
@@ -159,4 +164,8 @@ int main() {
     reverse(list);
 	printf("reversed list\n");
     print_list(list);
+
+	while(*list != NULL) {
+		pop(list);
+	}
 }
