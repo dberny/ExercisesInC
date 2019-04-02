@@ -120,7 +120,7 @@ Hashable *make_hashable(void *key,
 */
 void print_hashable(Hashable *hashable)
 {
-	printf ("printing hashable:\n");
+	// printf ("printing hashable:\n");
     printf ("key %p\n", hashable->key);
     printf ("hash %p\n", hashable->hash);
 }
@@ -273,7 +273,7 @@ Node *make_node(Hashable *key, Value *value, Node *next)
 /* Prints a Node. */
 void print_node(Node *node)
 {
-	printf ("printing node:\n");
+	// printf ("printing node:\n");
     print_hashable(node->key);
     printf ("value %p\n", node->value);
     printf ("next %p\n", node->next);
@@ -283,7 +283,7 @@ void print_node(Node *node)
 /* Prints all the Nodes in a list. */
 void print_list(Node *node)
 {
-	printf("printing list:\n");
+	// printf("printing list:\n");
     if (node == NULL) {
         return;
     }
@@ -308,7 +308,8 @@ Value *list_lookup(Node *list, Hashable *key)
 {
 	Node* current = list;
 	while (current != NULL) {
-		if (key->equal(key->key, current->key)) {
+		if (key == current->key) {
+			// printf("WOOOOOOOO");
 			return current->value;
 		}
 		current = current->next;
@@ -391,10 +392,12 @@ int main ()
 
     // make a list by hand
     Value *value1 = make_int_value (17);
+	// print_lookup(value1);
     Node *node1 = make_node(hashable1, value1, NULL);
     print_node (node1);
 
     Value *value2 = make_string_value ("Orange");
+	// print_lookup(value2);
     Node *list = prepend(hashable2, value2, node1);
     print_list (list);
 
