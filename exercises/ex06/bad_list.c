@@ -57,6 +57,9 @@ int pop(Node **list) {
     int retval;
     Node *head = *list;
 
+	if (head == NULL) {
+		return -1;
+	}
     Node *next_node = head->next;
     retval = head->val;
     free(head);

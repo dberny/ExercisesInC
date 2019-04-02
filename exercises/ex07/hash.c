@@ -120,6 +120,7 @@ Hashable *make_hashable(void *key,
 */
 void print_hashable(Hashable *hashable)
 {
+	printf ("printing hashable:\n");
     printf ("key %p\n", hashable->key);
     printf ("hash %p\n", hashable->hash);
 }
@@ -178,7 +179,9 @@ int hash_hashable(Hashable *hashable)
 */
 int equal_int (void *ip, void *jp)
 {
-    // FILL THIS IN!
+    if ((int*)ip == (int*)jp) {
+		return 1;
+	}
     return 0;
 }
 
@@ -192,8 +195,14 @@ int equal_int (void *ip, void *jp)
 */
 int equal_string (void *s1, void *s2)
 {
-    // FILL THIS IN!
-    return 0;
+    char* str1 = (char*)s1;
+	char* str2 = (char*)s2;
+	for (int i = 0; i < strlen(str1); i++) {
+		if (str1[i] != str2[i]) {
+			return 0;
+		}
+	}
+    return 1;
 }
 
 
@@ -207,8 +216,7 @@ int equal_string (void *s1, void *s2)
 */
 int equal_hashable(Hashable *h1, Hashable *h2)
 {
-    // FILL THIS IN!
-    return 0;
+    return (h1->equal(h1->key, h2->key));
 }
 
 
@@ -265,6 +273,7 @@ Node *make_node(Hashable *key, Value *value, Node *next)
 /* Prints a Node. */
 void print_node(Node *node)
 {
+	printf ("printing node:\n");
     print_hashable(node->key);
     printf ("value %p\n", node->value);
     printf ("next %p\n", node->next);
@@ -274,6 +283,7 @@ void print_node(Node *node)
 /* Prints all the Nodes in a list. */
 void print_list(Node *node)
 {
+	printf("printing list:\n");
     if (node == NULL) {
         return;
     }
@@ -296,7 +306,13 @@ Node *prepend(Hashable *key, Value *value, Node *rest)
 /* Looks up a key and returns the corresponding value, or NULL */
 Value *list_lookup(Node *list, Hashable *key)
 {
-    // FILL THIS IN!
+	Node* current = list;
+	while (current != NULL) {
+		if (key->equal(key->key, current->key)) {
+			return current->value;
+		}
+		current = current->next;
+	}
     return NULL;
 }
 
@@ -341,15 +357,20 @@ void print_map(Map *map)
 /* Adds a key-value pair to a map. */
 void map_add(Map *map, Hashable *key, Value *value)
 {
-    // FILL THIS IN!
+    int hash = key->hash(key->key);
+	int index = hash%(map->n);
+	Node* start = prepend(key, value, map->lists[index]);
+	map->lists[index] = start;
 }
 
 
 /* Looks up a key and returns the corresponding value, or NULL. */
 Value *map_lookup(Map *map, Hashable *key)
 {
-    // FILL THIS IN!
-    return NULL;
+	int hash = key->hash(key->key);
+	int index = hash%(map->n);
+	Node* current = map->lists[index];
+	return list_lookup(current, key);
 }
 
 
