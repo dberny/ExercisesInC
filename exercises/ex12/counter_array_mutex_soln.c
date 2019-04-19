@@ -31,7 +31,7 @@ typedef struct {
     int counter;
     int end;
     int *array;
-	Mutex *mutex;
+    Mutex *mutex;
 } Shared;
 
 Shared *make_shared(int end)
@@ -47,8 +47,7 @@ Shared *make_shared(int end)
         shared->array[i] = 0;
     }
 
-	shared->mutex = make_mutex();
-
+    shared->mutex = make_mutex();
     return shared;
 }
 
@@ -56,7 +55,6 @@ pthread_t make_thread(void *(*entry)(void *), Shared *shared)
 {
     int ret;
     pthread_t thread;
-
 
     ret = pthread_create(&thread, NULL, entry, (void *) shared);
     if (ret != 0) {
@@ -78,20 +76,19 @@ void child_code(Shared *shared)
     printf("Starting child at counter %d\n", shared->counter);
 
     while (1) {
-		mutex_lock(shared->mutex);
-
+        mutex_lock(shared->mutex);
         if (shared->counter >= shared->end) {
-			mutex_unlock(shared->mutex);
+            mutex_unlock(shared->mutex);
             return;
         }
+
         shared->array[shared->counter]++;
         shared->counter++;
 
         if (shared->counter % 10000 == 0) {
             printf("%d\n", shared->counter);
         }
-
-		mutex_unlock(shared->mutex);
+        mutex_unlock(shared->mutex);
     }
 }
 

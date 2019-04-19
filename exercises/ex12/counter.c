@@ -75,6 +75,17 @@ void child_code(Shared *shared)
 {
     printf("counter = %d\n", shared->counter);
     shared->counter++;
+
+	// while (1) {
+	// 	if (shared->counter >= shared->end) {
+	// 		return;
+	// 	}
+	//
+	// 	shared->array[shared->counter]++;
+	// 	shared->counter++;
+	//
+	//
+	// }
 }
 
 /* Entry point for the child threads.
