@@ -8,7 +8,8 @@ char *strfilter1(char *string, char *letters) {
 
     // TODO: hoist strlen out of the loop!
     // See "Accidentally quadratic"
-    for (int i=0; i<strlen(string); i++) {
+	int len = strlen(string);
+    for (int i=0; i<len; i++) {
         char *ptr = strchr(letters, string[i]);
         if (ptr) {
             buffer[j++] = string[i];
@@ -47,6 +48,7 @@ char *strfilter3(char *string, char *letters) {
         }
     }
     return buffer;
+	// returning address of local variable, that is bad
 }
 
 char *strfilter4(char *string, char *letters) {

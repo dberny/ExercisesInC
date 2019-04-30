@@ -18,6 +18,7 @@ License: MIT License https://opensource.org/licenses/MIT
 // errno is an external global variable that contains
 // error information
 extern int errno;
+int global = 5;
 
 
 // get_seconds returns the number of seconds since the
@@ -30,10 +31,14 @@ double get_seconds() {
 }
 
 
-void child_code(int i)
+void child_code(int i, int* heap)
 {
     sleep(i);
     printf("Hello from child %d.\n", i);
+	printf("global address: %p\n", &global);
+	printf("heap address: %p\n", heap);
+	printf("stack address: %p\n", &i);
+
 }
 
 // main takes two parameters: argc is the number of command-line
@@ -57,6 +62,7 @@ int main(int argc, char *argv[])
     // get the start time
     start = get_seconds();
 
+	int *heap = malloc(sizeof(int));
     for (i=0; i<num_children; i++) {
 
         // create a child process
@@ -72,10 +78,11 @@ int main(int argc, char *argv[])
 
         /* see if we're the parent or the child */
         if (pid == 0) {
-            child_code(i);
+            child_code(i, heap);
             exit(i);
         }
     }
+	printf("stack address: %p\n", &i);
 
     /* parent continues */
     printf("Hello from the parent.\n");
