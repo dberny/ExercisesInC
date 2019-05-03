@@ -195,6 +195,11 @@ int main() {
     int res = insert_by_index(&test_list, 9, 8);
     assert(res == -1);
 
+	while (test_list != NULL) {
+		pop(&test_list);
+	}
+
+
     printf("test_list\n");
     print_list(&test_list);
 
@@ -205,8 +210,12 @@ int main() {
     // add an element to the empty list
     insert_by_index(&empty, 1, 0);
     print_list(&empty);
+	free(empty);
 
     Node *something = make_something();
+	while (something != NULL) {
+		pop(&something);
+	}
     free(something);
 
     return 0;

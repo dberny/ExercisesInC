@@ -37,6 +37,14 @@ void pair_printor(gpointer value, gpointer user_data)
 }
 
 
+void free_pair (gpointer p)
+{
+    Pair *pair = (Pair *) p;
+    g_free(pair->word);
+    g_free(pair);
+}
+
+
 /* Iterator that prints keys and values. */
 void kv_printor (gpointer key, gpointer value, gpointer user_data)
 {
@@ -93,7 +101,7 @@ int main(int argc, char** argv)
     (one-L) NUL terminated strings */
     gchar **array;
     gchar line[128];
-    GHashTable* hash = g_hash_table_new(g_str_hash, g_str_equal);
+    GHashTable* hash = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
 
     // read lines from the file and build the hash table
     while (1) {
@@ -104,14 +112,16 @@ int main(int argc, char** argv)
         for (int i=0; array[i] != NULL; i++) {
             incr(hash, array[i]);
         }
+		g_strfreev(array);
     }
     fclose(fp);
+
 
     // print the hash table
     // g_hash_table_foreach(hash, (GHFunc) kv_printor, "Word %s freq %d\n");
 
     // iterate the hash table and build the sequence
-    GSequence *seq = g_sequence_new(NULL);
+    GSequence *seq = g_sequence_new((GDestroyNotify) free_pair);
     g_hash_table_foreach(hash, (GHFunc) accumulator, (gpointer) seq);
 
     // iterate the sequence and print the pairs

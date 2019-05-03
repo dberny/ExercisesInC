@@ -1,10 +1,7 @@
 /* Example code for Exercises in C.
-
 Based on an example from http://www.learn-c.org/en/Linked_lists
-
 Copyright 2016 Allen Downey
 License: Creative Commons Attribution-ShareAlike 3.0
-
 */
 
 #include <stdio.h>
@@ -142,10 +139,8 @@ void reverse(Node **list) {
 }
 
 /* Adds a new element to the list before the indexed element.
-
 Index 0 adds an element to the beginning.
 Index 1 adds an element between the first and second elements.
-
 Returns 0 if successful, -1 if the index is out of range.
 */
 int insert_by_index(Node **head, int val, int index) {
@@ -246,6 +241,6 @@ int main() {
     // free_list_set(something, set);
 
     // g_hash_table_destroy(set);
-    
+
     return 0;
 }
